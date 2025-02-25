@@ -1,0 +1,54 @@
+# Ignore environment variables
+.env
+
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Ignore Django migration files
+*/migrations/*.py
+*/migrations/*.pyc
+
+# Ignore database files
+db.sqlite3
+
+# Ignore system-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore virtual environment folders
+venv/
+.env/
+.envrc
+.venv/
+
+# Ignore coverage reports
+htmlcov/
+.coverage
+*.cover
+*.coverage
+nosetests.xml
+coverage.xml
+
+# Ignore logs and debug files
+logs/
+*.log
+
+# Ignore compiled files
+*.so
+*.egg
+*.egg-info
+dist/
+build/
+
+# Ignore Docker-related files
+docker-compose.override.yml
