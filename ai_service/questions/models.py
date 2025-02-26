@@ -9,7 +9,7 @@ class AIRequest(models.Model):
     previous_prompt = models.TextField()
     previous_response = models.JSONField()
     feedback = models.TextField(null=True, blank=True)
-    language = models.CharField(max_length=10, default="en")
+    language = models.CharField(max_length=50, default="en")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

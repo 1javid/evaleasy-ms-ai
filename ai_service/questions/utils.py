@@ -13,28 +13,39 @@ genai.configure(api_key=GOOGLE_GEMINI_API_KEY)
 def generate_questions(teacher_id, subject, difficulty, num_questions, num_answers, language="en", feedback=None):
     """
     Generate AI-based multiple-choice questions using Google Gemini API.
-    Ensures structured JSON output.
+    Ensures structured JSON output in the specified language.
     """
+    # Map language codes to full language names
+    language_map = {
+        'en': 'English',
+        'ru': 'Russian',
+        'az': 'Azerbaijani'
+    }
+    
+    language_name = language_map.get(language, 'English')
+    
     prompt = f"""
     You are an AI that generates structured JSON-formatted multiple-choice questions.
+    Generate all questions and answers in {language_name} language only.
     Do not return explanations or extra text. Return only valid JSON.
 
     Generate {num_questions} multiple-choice questions for {subject}.
     - Each question must have {num_answers} answer choices.
     - The difficulty level should be {difficulty}.
     - Avoid numerical calculations.
+    - ALL TEXT MUST BE IN {language_name.upper()} LANGUAGE ONLY.
     
     **FORMAT:**
     {{
         "questions": [
             {{
-                "text": "Question text here",
+                "text": "Question text here in {language_name}",
                 "default_score": "1.00",
                 "answers": [
-                    {{"text": "Answer 1", "is_correct": false}},
-                    {{"text": "Answer 2", "is_correct": false}},
-                    {{"text": "Answer 3", "is_correct": true}},
-                    {{"text": "Answer 4", "is_correct": false}}
+                    {{"text": "Answer 1 in {language_name}", "is_correct": false}},
+                    {{"text": "Answer 2 in {language_name}", "is_correct": false}},
+                    {{"text": "Answer 3 in {language_name}", "is_correct": true}},
+                    {{"text": "Answer 4 in {language_name}", "is_correct": false}}
                 ]
             }},
             ...
@@ -47,13 +58,9 @@ def generate_questions(teacher_id, subject, difficulty, num_questions, num_answe
     if feedback:
         prompt += f" The teacher provided feedback: '{feedback}'. Improve based on this feedback."
 
-    print(f"Generated Prompt: {prompt}")  # Debugging
-
     try:
         model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(prompt)
-
-        print("Raw Gemini Response:", response.text)  # Debugging
 
         # Extract text response
         response_text = response.text.strip()

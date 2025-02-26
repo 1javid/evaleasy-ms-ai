@@ -11,8 +11,13 @@ def generate_questions_api(request):
     difficulty = request.data.get('difficulty')
     num_questions = int(request.data.get('num_questions', 5))
     num_answers = int(request.data.get('num_answers', 4))
-    language = request.headers.get('Accept-Language', 'en')
+    # Accept language from request body first, then header as fallback
+    language = request.data.get('language') or request.headers.get('Accept-Language', 'en')
     feedback = request.data.get('feedback', None)
+    
+    # Validate and restrict language options
+    if language not in ['en', 'ru', 'az']:
+        language = 'en'  # Default to English if not supported
 
     if not teacher_id or not subject or not difficulty:
         return Response({"error": _("Teacher ID, Subject, and Difficulty are required")}, status=400)
